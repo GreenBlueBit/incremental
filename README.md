@@ -11,13 +11,25 @@ All you have to do is have an input field in your html, like this for example :
     
 And then do the following in a local js file.
 
-    // $.incremental(min,max,loop,input,afterThought);
-    $.incremental(0,900,false,$(".input"), null); 
+        /* $(".input").incremental({
+    		min: 1,
+    		max: 200,
+    		loop: true,
+    		afterThought: function() {
+            alert("NEW VAL : " + $(".input").val());
+    	}
+    	});
+    	*/
+    
+    $(".input").incremental({
+		min: 1,
+		max: 200,
+		loop: true
+	});
     
 The parameters are as follows :
 
     min - the minimum value allowed in the field
     max - the maximum value allowed in the field
     loop - boolean which, if true, forces the value to loop if it goes beyond the set limitations.
-    input - the field you want to have the incremental btns
     afterThought - allows you to have a method run after the value was modified, so you can for example send the new information to your server.
