@@ -1,32 +1,47 @@
-jQuery(function($) {
-	$.incremental = function(min, max, loop, input, afterThought) {
-		input.parent().append("<div class='btn increase'>+</div><div class='btn decrease'>-</div>");
+(function ($) {
+
+	$.fn.incremental = function( options ) {
+
+		var settings = $.extend({
+			min: 1,
+			max: 10,
+			loop: true,
+			afterThought: null
+		}, options);
+
+		var curInput = $(this);
+		var inputClass = curInput.attr("class").split(' ')[0];
+		curInput.parent().append("<div class='btn-holder'><div class='button"+inputClass+" increase'></div><div class='button"+inputClass+" decrease'></div></div>");
 	
-		$(".btn").on("click", function() {
+		
+		$(".button"+inputClass).on("click", function() {
 			var btn = $(this);
 
-			var curVal = input.val();
+			var curVal = btn.parent().parent().find("input:text").val();
+			
 			curVal = Number(curVal);
 			var newVal = curVal;
-
+			console.log("CUR VAL : " + curVal);
 			if(btn.hasClass("increase")) {
-				if(curVal < max) {
+				if(curVal < settings.max) {
 					newVal++;
-				} else if(loop) {
-					newVal = min;
+				} else if(settings.loop) {
+					newVal = settings.min;
 				}
 			} else if(btn.hasClass("decrease")) {
-				if(curVal > min) {
+				if(curVal > settings.min) {
 					newVal--;
-				} else if(loop) {
-					newVal = max;
+				} else if(settings.loop) {
+					newVal = settings.max;
 				}
 			}
+			curInput.parent().parent().find("input:text").val(newVal);
 
-			input.val(newVal);
-
-			if(afterThought != null)
-				afterThought();
+			if(settings.afterThought != null)
+				settings.afterThought();
 		});
-	}
-});
+
+		return this;
+	};
+
+}( jQuery));
